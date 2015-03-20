@@ -17,18 +17,25 @@ The raw data set for this analysis was downloaded from a shared drive setup for 
 The data is stored as a compressed CSV file, which we will read in directly.
 ```{r}
 # Only load data if it has not been loaded into the environment 
-if (!exists("stormdata")) {
-  stormdata <- read.csv("data/StormData.csv.bz2")
+if (!exists("rawdata")) {
+  rawdata <- read.csv("data/StormData.csv.bz2")
 }
-```
-Renaming columns to be more readable, using Camelcase formatting
-```{r}
-rename(stormdata, )
 ```
 
 Based on documentation published at the NOAA Storm Database website, the reported event types did not start following the current 48 official types until January of 1996. For the purposes of this analysis, which is to advise current policy makers, and to avoid skewing the analysis we will truncate the working set of data to start at January 1996.
+```{r}
+cutoffDate <- as.Date("1/1/1996","%m/%d/%Y")
+rawdata$BGN_DATE <- as.Date(rawdata$BGN_DATE, "%m/%d/%Y")
+rawdata$END_DATE <- as.Date(rawdata$END_DATE, "%m/%d/%Y")
+rawdata <- rawdata[rawdata$BGN_DATE >= cutoffDate,]
+```
 
-* Tidy up column names  
+Renaming columns to be more tidy, using Camelcase formatting. Also removing some columns that are not used in our analysis either due to not being applicable or because they are empty
+```{r}
+stormdata <- select(rawdata, startDate = BGN_DATE, timeZone = TIME_ZONE, countyFIPS = COUNTY, countyName = COUNTYNAME, state = STATE, eventType = EVTYPE, startAzimuth = BGN_AZI, startLocation = BGN_LOCATI, endDate = END_DATE, endAzimuth = END_AZI, endLocation = END_LOCATI, fujita = F, magnitude = MAG, fatalities = FATALITIES, injuries = INJURIES, propertyDamageBase = PROPDMG, propertyDamageExponent = PROPDMGEXP, cropDamageBase = CROPDMG, cropDamageExpontent = CROPDMGEXP,weatherForecastOfficeID = WFO, stateOffice = STATEOFFIC, latitude = LATITUDE, longitude = LONGITUDE)
+``` 
+
+For the purpose of this analysis, we only care about events that caused fatalitys, injuries, property, or crop damage. We will remove the other events to reduce the size of the data set and the amount of event types to clean up.
 
 According to published documentation for this data set, data should be coded according to one of the 48 enumerated event types identified in NWS Directive 10-1605. The current dataset has 985 distinct event types. We will recode those into the documented 48 categories to align to NWS guidance.
 
