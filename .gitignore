@@ -10,3 +10,6 @@
 # RStudio files
 .Rproj.user/
 .Rproj.user
+
+# knitr files
+PA2.html

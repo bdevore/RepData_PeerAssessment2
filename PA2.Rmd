@@ -12,15 +12,27 @@ library(dplyr)
 **Describe and summarize my analysis in no more than 10 complete sentences**
 
 ## Data Processing
-**Describe how data was loaded into R and processed for analysis**
+The raw data set for this analysis was downloaded from a shared drive setup for the Johns Hopkins Reproduceable Data Class on Coursera, and is available here: [Storm Data](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2). The data set was originally downloaded from the [NOAA Storm Events Database](https://www.ncdc.noaa.gov/stormevents/) and contains data collected between 1950 and November of 2011.
+
+The data is stored as a compressed CSV file, which we will read in directly.
 ```{r}
-data <- read.csv("data/StormData.csv.bz2")
+# Only load data if it has not been loaded into the environment 
+if (!exists("stormdata")) {
+  stormdata <- read.csv("data/StormData.csv.bz2")
+}
 ```
-Processing steps  
-* Tidy up column names
-* Filter earlier years?
-* Recode event types
-* Clean up damage assessments
+Renaming columns to be more readable, using Camelcase formatting
+```{r}
+rename(stormdata, )
+```
+
+Based on documentation published at the NOAA Storm Database website, the reported event types did not start following the current 48 official types until January of 1996. For the purposes of this analysis, which is to advise current policy makers, and to avoid skewing the analysis we will truncate the working set of data to start at January 1996.
+
+* Tidy up column names  
+
+According to published documentation for this data set, data should be coded according to one of the 48 enumerated event types identified in NWS Directive 10-1605. The current dataset has 985 distinct event types. We will recode those into the documented 48 categories to align to NWS guidance.
+
+* Clean up damage assessments  
 
 ## Results
 **Present Results - at least one plot, no more than three**
