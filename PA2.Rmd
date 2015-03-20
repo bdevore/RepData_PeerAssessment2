@@ -1,0 +1,16 @@
+---
+title: "Peer Assessment 2"
+author: "Benjamin DeVore"
+date: "March 20, 2015"
+output: html_document
+---
+# My Title
+## Synopsis
+**Describe and summarize my analysis in no more than 10 complete sentences**
+
+## Data Processing
+**Describe how data was loaded into R and processed for analysis**
+
+## Results
+**Present Results - at least one plot, no more than three**
+
